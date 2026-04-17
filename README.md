@@ -23,7 +23,6 @@ A deduplicacao considera o grao analitico `order_id + business_date` e mantem o 
 
 A escrita e idempotente por janela: antes de inserir os agregados, a solucao remove do destino os dias dentro da janela e grava novamente o resultado calculado. Localmente a saida principal e SQLite, com uma copia em CSV para inspecao rapida. A escrita Parquet fica disponivel via `--write-parquet`, mais adequada para Docker/Linux porque PySpark no Windows costuma exigir configuracoes adicionais do Hadoop.
 
-## Pontos esperados do README
 
 ### Estrategia para processar os dados ao longo do tempo
 
