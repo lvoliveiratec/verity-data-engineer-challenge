@@ -60,6 +60,7 @@ with DAG(
             f"PYTHONPATH={PYTHONPATH} python -m pipeline.processing "
             f"--input-path {STAGING_FILE} "
             f"--parquet-output-path {PROJECT_HOME}/data/curated/orders_daily_summary "
+            f"--csv-output-path {PROJECT_HOME}/data/curated/orders_daily_summary.csv "
             f"--mart-db-path {PROJECT_HOME}/data/curated/orders_mart.db "
             f"--process-date {PROCESS_DATE} "
             f"--lookback-days {LOOKBACK_DAYS}"

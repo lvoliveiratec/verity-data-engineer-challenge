@@ -1,6 +1,7 @@
 __pycache__/
 .pytest_cache/
 .venv/
+.env
 airflow.db
 airflow.cfg
 webserver_config.py
@@ -8,4 +9,9 @@ logs/
 data/raw/*.db
 data/staging/*.csv
 data/curated/
+!data/raw/
+!data/raw/.gitkeep
+!data/staging/
+!data/staging/.gitkeep
+!data/curated/
 !data/curated/.gitkeep

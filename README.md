@@ -105,12 +105,21 @@ Resultado analitico esperado para a massa de exemplo:
 ```bash
 git clone <URL_DO_REPOSITORIO>
 cd verity-data-engineer-challenge
+echo "AIRFLOW_UID=$(id -u)" > .env
 docker compose up --build
 ```
 
 Acesse `http://localhost:8080` com usuario `admin` e senha `admin`. A DAG se chama `orders_daily_summary`.
 
 A imagem do Compose instala OpenJDK 17 e `procps`, dependencias necessarias para o PySpark iniciar o Java gateway dentro do container Airflow.
+
+O arquivo `.env` define o UID usado pelo container para escrever nos volumes locais. Em Linux/WSL, `echo "AIRFLOW_UID=$(id -u)" > .env` evita erros de permissao ao criar arquivos em `data/`.
+
+Se o Docker ja tiver criado a pasta `data/` como `root` em uma tentativa anterior, corrija a permissao antes de subir novamente:
+
+```bash
+sudo chown -R "$(id -u):$(id -g)" data
+```
 
 Em execucoes agendadas ou manuais simples, nenhuma data precisa ser informada: o Airflow usa automaticamente a data logica da execucao (`ds`). Basta clicar em `Trigger`.
 
