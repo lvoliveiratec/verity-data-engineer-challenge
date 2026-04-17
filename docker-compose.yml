@@ -1,0 +1,47 @@
+services:
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: verity-airflow-pyspark:local
+    container_name: verity-airflow
+    user: "${AIRFLOW_UID:-50000}:0"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      PROJECT_HOME: /opt/airflow
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+      _AIRFLOW_DB_MIGRATE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: admin
+      _AIRFLOW_WWW_USER_PASSWORD: admin
+      _AIRFLOW_WWW_USER_FIRSTNAME: Data
+      _AIRFLOW_WWW_USER_LASTNAME: Engineer
+      _AIRFLOW_WWW_USER_EMAIL: admin@example.com
+      _AIRFLOW_WWW_USER_ROLE: Admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./data:/opt/airflow/data
+      - airflow_logs:/opt/airflow/logs
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create
+        --username admin
+        --firstname Data
+        --lastname Engineer
+        --role Admin
+        --email admin@example.com
+        --password admin || true &&
+      airflow users reset-password --username admin --password admin &&
+      airflow users list &&
+      airflow scheduler &
+      exec airflow webserver
+      "
+volumes:
+  airflow_logs:

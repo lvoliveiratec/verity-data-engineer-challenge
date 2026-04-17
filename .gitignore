@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+airflow.db
+airflow.cfg
+webserver_config.py
+logs/
+data/raw/*.db
+data/staging/*.csv
+data/curated/
+!data/curated/.gitkeep
